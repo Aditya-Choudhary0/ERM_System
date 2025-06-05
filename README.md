@@ -11,6 +11,11 @@ The application is composed of:
 
 ---
 
+Deployed link
+
+- **Frontend** : https://erm-system-frontend.onrender.com
+- **Backend** : https://erm-system.onrender.com/api
+
 ## Features
 
 ### 🔐 Authentication & User Roles
@@ -319,33 +324,6 @@ Overall, AI tools significantly enhanced velocity and helped solve unfamiliar pr
 
 ---
 
-## Project Structure
-
-```
-├── backend/
-│   ├── src/
-│   │   ├── config/         # DB connection
-│   │   ├── controllers/    # Route logic
-│   │   ├── models/         # DB queries
-│   │   ├── routes/         # API routes
-│   │   └── server.js       # App entry
-│   ├── .env.example
-│   └── package.json
-├── client/
-│   ├── src/
-│   │   ├── api/
-│   │   ├── components/
-│   │   ├── pages/
-│   │   ├── types.ts
-│   │   ├── App.tsx
-│   │   └── main.tsx
-│   ├── .env.example
-│   ├── tailwind.config.js
-│   ├── vite.config.ts
-│   └── index.html
-```
-
----
 
 ## Contributing
 
