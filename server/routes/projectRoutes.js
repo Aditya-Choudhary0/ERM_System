@@ -1,13 +1,3 @@
-// const router = require('express').Router();
-// const { protect } = require('../middleware/authMiddleware');
-// const { getProjects, getProjectById, createProject } = require('../controllers/projectController');
-
-// router.get('/', protect, getProjects);
-// router.get('/:id', protect, getProjectById);
-// router.post('/', protect, createProject);
-
-// module.exports = router;
-
 const express = require('express');
 const router = express.Router();
 const projectController = require('../controllers/projectController');

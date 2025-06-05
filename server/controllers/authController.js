@@ -1,31 +1,6 @@
-// const jwt = require('jsonwebtoken');
-// const pool = require('../config/db');
-
-// const login = async (req, res) => {
-
-//     const { email } = req.body;
-    
-//     const result = await pool.query('SELECT * FROM users WHERE email = $1', [email]);
-    
-//     const user = result.rows[0];
-    
-//     if (!user) return res.status(404).json({ message: 'User not found' });
-    
-//     const token = jwt.sign({ id: user.id }, process.env.JWT_SECRET);
-    
-//     res.json({ token });
-// };
-
-// const getProfile = async (req, res) => {
-//     res.json(req.user);
-// };
-
-// module.exports = { login, getProfile };
-
-
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
-const User = require('../models/User'); // Import User model
+const User = require('../models/User');
 const JWT_SECRET = process.env.JWT_SECRET;
 
 const loginUser = async (req, res) => {
@@ -60,7 +35,6 @@ const loginUser = async (req, res) => {
 
 const getProfile = async (req, res) => {
     try {
-        // req.user is populated by authenticateToken middleware
         const user = await User.findUserById(req.user.id);
 
         if (!user) {

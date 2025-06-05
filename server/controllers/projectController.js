@@ -1,38 +1,3 @@
-// const pool = require('../config/db');
-
-// const getProjects = async (req, res) => {
-    
-//     const result = await pool.query('SELECT * FROM projects');
-
-//     res.json(result.rows);
-
-// };
-
-// const getProjectById = async (req, res) => {
-    
-//     const { id } = req.params;
-    
-//     const result = await pool.query('SELECT * FROM projects WHERE id = $1', [id]);
-
-//     res.json(result.rows[0]);
-
-// };
-
-// const createProject = async (req, res) => {
-    
-//     const { name, description, startDate, endDate, requiredSkills, teamSize, status } = req.body;
-    
-//     const result = await pool.query(
-//         'INSERT INTO projects (name, description, startdate, enddate, requiredskills, teamsize, status, managerid) VALUES ($1,$2,$3,$4,$5,$6,$7,$8) RETURNING *',
-//         [name, description, startDate, endDate, requiredSkills, teamSize, status, req.user.id]
-//     );
-    
-//     res.json(result.rows[0]);
-// };
-
-// module.exports = { getProjects, getProjectById, createProject };
-
-
 const Project = require('../models/Project');
 const User = require('../models/User');
 

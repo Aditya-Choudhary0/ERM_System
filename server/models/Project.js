@@ -1,32 +1,15 @@
 const pool = require('../config/db');
 
-/**
- * @function getAllProjects
- * @description Retrieves all projects, including the manager's name.
- * @returns {Promise<Array<Object>>} - An array of project objects.
- */
 const getAllProjects = async () => {
     const result = await pool.query('SELECT p.*, u.name as manager_name FROM projects p JOIN users u ON p.manager_id = u.id');
     return result.rows;
 };
 
-/**
- * @function getProjectById
- * @description Retrieves a single project by its ID, including the manager's name.
- * @param {string} id - The project's UUID.
- * @returns {Promise<Object|null>} - Project object or null.
- */
 const getProjectById = async (id) => {
     const result = await pool.query('SELECT p.*, u.name as manager_name FROM projects p JOIN users u ON p.manager_id = u.id WHERE p.id = $1', [id]);
     return result.rows[0] || null;
 };
 
-/**
- * @function createProject
- * @description Creates a new project in the database.
- * @param {Object} projectData - Project data (name, description, dates, skills, etc.).
- * @returns {Promise<Object>} - The newly created project object.
- */
 const createProject = async (projectData) => {
     const { name, description, startDate, endDate, requiredSkills, teamSize, status, managerId } = projectData;
     const result = await pool.query(
@@ -37,13 +20,6 @@ const createProject = async (projectData) => {
     return result.rows[0];
 };
 
-/**
- * @function updateProject
- * @description Updates an existing project.
- * @param {string} id - Project's UUID.
- * @param {Object} updates - Fields to update.
- * @returns {Promise<Object|null>} - Updated project object or null if not found.
- */
 const updateProject = async (id, updates) => {
     const { name, description, startDate, endDate, requiredSkills, teamSize, status, managerId } = updates;
     const result = await pool.query(

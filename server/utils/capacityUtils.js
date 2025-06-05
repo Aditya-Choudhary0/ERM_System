@@ -1,7 +1,7 @@
 const pool = require('../config/db');
 
 const getEngineerCurrentAllocation = async (engineerId) => {
-    const today = new Date().toISOString().split('T')[0]; // Current date in YYYY-MM-DD format
+    const today = new Date().toISOString().split('T')[0];
 
     const assignmentsResult = await pool.query(
         'SELECT allocation_percentage FROM assignments WHERE engineer_id = $1 AND end_date >= $2',

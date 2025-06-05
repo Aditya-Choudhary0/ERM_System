@@ -1,12 +1,10 @@
 import React, { useState, useEffect, useContext } from 'react';
 import { AuthContext } from '../components/AuthContext.tsx';
 import { useForm, type SubmitHandler } from 'react-hook-form';
-// import { Project, ProjectFormData } from '../types'; // Import types
 import { createProject, getProjects, updateProject } from '../api/api.tsx';
 import LoadingSpinner from '../components/LoadingSpinner.tsx';
 import type { Project, ProjectFormData } from '../types.ts';
 
-// Simple Modal component (can be replaced with ShadCN Dialog)
 interface ModalProps {
   isOpen: boolean;
   onClose: () => void;
@@ -41,7 +39,7 @@ function ProjectsPage() {
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
-  const [editingProject, setEditingProject] = useState<Project | null>(null); // Project being edited
+  const [editingProject, setEditingProject] = useState<Project | null>(null);
 
   const { register, handleSubmit, reset, setValue, formState: { errors } } = useForm<ProjectFormData>();
 
@@ -75,7 +73,7 @@ function ProjectsPage() {
       const requiredSkillsArray = data.requiredSkills ? data.requiredSkills.split(',').map(s => s.trim()) : [];
 
       if (!editingProject) {
-        if (user?.role !== 'manager') { // Ensure user is a manager for creation
+        if (user?.role !== 'manager') {
             setError('Only managers can create projects.');
             setLoading(false);
             return;
@@ -88,8 +86,8 @@ function ProjectsPage() {
             required_skills: requiredSkillsArray,
             team_size: data.teamSize,
             status: data.status,
-            manager_id: user.id // Assign current user as manager
-        }, token as string); // Cast token as it's guaranteed to exist here
+            manager_id: user.id
+        }, token as string);
       } else {
         await updateProject(editingProject.id, {
             name: data.name,
@@ -99,12 +97,14 @@ function ProjectsPage() {
             required_skills: requiredSkillsArray,
             team_size: data.teamSize,
             status: data.status,
-            // manager_id is not updated here, as it's typically set on creation
         }, token as string);
       }
+      
       setIsModalOpen(false);
-      reset(); // Clear form fields
-      await fetchProjects(); // Refresh project list
+      reset();
+      
+      await fetchProjects();
+
     } catch (err: any) {
       setError(err.message || 'Failed to save project.');
       console.error('Error saving project:', err);
@@ -126,7 +126,7 @@ function ProjectsPage() {
     setEditingProject(project);
     setValue('name', project.name);
     setValue('description', project.description);
-    setValue('startDate', project.start_date.split('T')[0]); // Format date for input
+    setValue('startDate', project.start_date.split('T')[0]);
     setValue('endDate', project.end_date.split('T')[0]);
     setValue('requiredSkills', project.required_skills ? project.required_skills.join(', ') : '');
     setValue('teamSize', project.team_size);
@@ -135,7 +135,7 @@ function ProjectsPage() {
   };
 
 
-  if (loading && !projects.length) { // Only show full loading if no projects are loaded yet
+  if (loading && !projects.length) {
     return (
       <div className="flex justify-center items-center h-full">
         <LoadingSpinner />
@@ -220,7 +220,6 @@ function ProjectsPage() {
                       >
                         Edit
                       </button>
-                      {/* Delete functionality can be added here, potentially with a confirmation modal */}
                     </td>
                   )}
                 </tr>

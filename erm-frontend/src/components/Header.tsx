@@ -1,9 +1,9 @@
-import React, { useContext } from 'react';
-import { AuthContext } from './AuthContext'; // Import AuthContext
-import { ROUTES } from '../App'; // Import ROUTES from App.tsx
+import { useContext } from 'react';
+import { AuthContext } from './AuthContext';
+import { ROUTES } from '../App';
 
 interface HeaderProps {
-  navigate: (path: typeof ROUTES[keyof typeof ROUTES]) => void; // Update type for navigate function
+  navigate: (path: typeof ROUTES[keyof typeof ROUTES]) => void;
   userRole: 'manager' | 'engineer';
 }
 
@@ -16,7 +16,7 @@ function Header({ navigate, userRole }: HeaderProps) {
 
   const handleLogout = () => {
     logout();
-    navigate(ROUTES.LOGIN); // Redirect to login page after logout
+    navigate(ROUTES.LOGIN);
   };
 
   return (

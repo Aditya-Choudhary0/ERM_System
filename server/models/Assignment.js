@@ -33,7 +33,7 @@ const getAssignments = async (filters = {}) => {
     if (conditions.length > 0) {
         queryText += ' WHERE ' + conditions.join(' AND ');
     }
-    queryText += ' ORDER BY a.start_date DESC'; // Order for consistency
+    queryText += ' ORDER BY a.start_date DESC';
 
     const result = await pool.query(queryText, queryParams);
     return result.rows;

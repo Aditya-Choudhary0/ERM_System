@@ -1,5 +1,5 @@
 import React, { useContext } from 'react';
-import { AuthContext } from './AuthContext'; // Import AuthContext
+import { AuthContext } from './AuthContext';
 
 interface ProtectedRouteProps {
   children: React.ReactNode;
@@ -16,7 +16,6 @@ const ProtectedRoute = ({ children, allowedRoles }: ProtectedRouteProps) => {
   if (loading) {
     return (
       <div className="min-h-screen flex items-center justify-center bg-gray-100">
-        {/* A simple placeholder loading indicator */}
         <div className="animate-spin rounded-full h-16 w-16 border-t-4 border-b-4 border-blue-500"></div>
       </div>
     );

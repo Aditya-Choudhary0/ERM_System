@@ -4,7 +4,6 @@ import { getAssignments, createAssignment, updateAssignment, deleteAssignment, g
 import { useForm, type SubmitHandler } from 'react-hook-form';
 import LoadingSpinner from '../components/LoadingSpinner';
 import type { Assignment, AssignmentFormData, Engineer, Project } from '../types';
-// import { Assignment, Engineer, Project, AssignmentFormData } from '../types'; // Import types
 
 
 // Re-using the simple Modal component for consistency
@@ -44,7 +43,7 @@ function AssignmentsPage() {
     const [loading, setLoading] = useState<boolean>(true);
     const [error, setError] = useState<string | null>(null);
     const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
-    const [editingAssignment, setEditingAssignment] = useState<Assignment | null>(null); // Assignment being edited
+    const [editingAssignment, setEditingAssignment] = useState<Assignment | null>(null);
 
     const { register, handleSubmit, reset, setValue, formState: { errors } } = useForm<AssignmentFormData>();
 
@@ -57,7 +56,7 @@ function AssignmentsPage() {
             setLoading(true);
             setError(null);
             const [assignmentsList, engineersList, projectsList] = await Promise.all([
-                getAssignments({}, token), // Fetch all assignments
+                getAssignments({}, token),
                 getEngineers(token),
                 getProjects(token),
             ]);
@@ -81,29 +80,31 @@ function AssignmentsPage() {
         setError(null);
         try {
             if (editingAssignment) {
-                // Map form data fields to API expected fields for update
+                
                 await updateAssignment(editingAssignment.id, {
                     engineer_id: data.engineerId,
                     project_id: data.projectId,
                     allocation_percentage: data.allocationPercentage,
                     start_date: data.startDate,
                     end_date: data.endDate,
-                    assignment_role: data.role // Mapping 'role' to 'assignment_role'
+                    assignment_role: data.role
                 }, token as string);
             } else {
-                // Map form data fields to API expected fields for create
                 await createAssignment({
                     engineer_id: data.engineerId,
                     project_id: data.projectId,
                     allocation_percentage: data.allocationPercentage,
                     start_date: data.startDate,
                     end_date: data.endDate,
-                    assignment_role: data.role // Mapping 'role' to 'assignment_role'
+                    assignment_role: data.role
                 }, token as string);
             }
+            
             setIsModalOpen(false);
-            reset(); // Clear form fields
-            await fetchAllData(); // Refresh all lists
+            reset();
+            
+            await fetchAllData();
+        
         } catch (err: any) {
             setError(err.message || 'Failed to save assignment.');
             console.error('Error saving assignment:', err);
@@ -134,14 +135,13 @@ function AssignmentsPage() {
     };
 
     const handleDelete = async (assignmentId: string) => {
-        // Using a custom modal/dialog instead of window.confirm for better UI/UX and consistent behavior
-        // For simplicity, I'll keep the `window.confirm` for now, but note it should be replaced.
+
         if (window.confirm('Are you sure you want to delete this assignment?')) {
             setLoading(true);
             setError(null);
             try {
                 await deleteAssignment(assignmentId, token as string);
-                await fetchAllData(); // Refresh list
+                await fetchAllData();
             } catch (err: any) {
                 setError(err.message || 'Failed to delete assignment.');
                 console.error('Error deleting assignment:', err);
