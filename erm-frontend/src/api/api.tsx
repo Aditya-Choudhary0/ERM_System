@@ -2,15 +2,6 @@ import type { Assignment, Engineer, EngineerCapacity, Project, User } from "../t
 
 const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
 
-/**
- * @function authFetch
- * @description A wrapper around fetch for authenticated requests.
- * @param {string} endpoint - The API endpoint (e.g., '/auth/profile').
- * @param {RequestInit} options - Fetch options (method, headers, body).
- * @param {string} [token] - Optional: The JWT token for authorization.
- * @returns {Promise<T>} - The JSON response from the API.
- * @throws {Error} - Throws an error if the request fails or returns a non-2xx status.
- */
 async function authFetch<T>(endpoint: string, options: RequestInit = {}, token?: string): Promise<T> {
   // Explicitly type headers as Record<string, string> to allow dynamic property assignment
   const headers: Record<string, string> = {
@@ -24,7 +15,7 @@ async function authFetch<T>(endpoint: string, options: RequestInit = {}, token?:
 
   const response = await fetch(`${API_BASE_URL}${endpoint}`, {
     ...options,
-    headers, // Use the dynamically built headers object
+    headers,
   });
 
   if (!response.ok) {
