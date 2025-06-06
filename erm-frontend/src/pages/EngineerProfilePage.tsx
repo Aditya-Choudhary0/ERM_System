@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useContext } from 'react';
+import { useState, useEffect, useContext } from 'react';
 import { AuthContext } from '../components/AuthContext';
 import { getProfile, updateEngineer } from '../api/api';
 import { useForm, type SubmitHandler } from 'react-hook-form';
@@ -18,7 +18,7 @@ function EngineerProfilePage() {
   const [error, setError] = useState<string | null>(null);
   const [successMessage, setSuccessMessage] = useState<string | null>(null);
 
-  const { register, handleSubmit, reset, setValue, formState: { errors } } = useForm<EngineerProfileFormData>();
+  const { register, handleSubmit, reset, formState: { errors } } = useForm<EngineerProfileFormData>();
 
   const fetchUserProfile = async () => {
     if (!token || !user) {
