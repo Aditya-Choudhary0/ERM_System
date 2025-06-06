@@ -49,14 +49,14 @@ Deployed link
 
 ## Technologies Used
 
-### Frontend (`./client`)
+### Frontend (`./server`)
 - **React.js**
 - **Vite**
 - **TypeScript**
 - **Tailwind CSS**
 - **React Hook Form**
 
-### Backend (`./backend`)
+### Backend (`./erm-frontend`)
 - **Node.js**
 - **Express.js**
 - **PostgreSQL**
