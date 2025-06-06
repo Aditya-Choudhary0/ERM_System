@@ -50,12 +50,12 @@ export const getEngineers = async (token: string): Promise<Engineer[]> => {
   return authFetch<Engineer[]>('/engineers', { method: 'GET' }, token);
 };
 
-export const getEngineerCapacity = async (engineerId: string, token: string): Promise<EngineerCapacity> => {
-  return authFetch<EngineerCapacity>(`/engineers/${engineerId}/capacity`, { method: 'GET' }, token);
+export const getEngineerCapacity = async (engineer_id: string, token: string): Promise<EngineerCapacity> => {
+  return authFetch<EngineerCapacity>(`/engineers/${engineer_id}/capacity`, { method: 'GET' }, token);
 };
 
-export const updateEngineer = async (engineerId: string, data: Partial<Engineer>, token: string): Promise<{ message: string; engineer: Engineer }> => {
-  return authFetch<{ message: string; engineer: Engineer }>(`/engineers/${engineerId}`, {
+export const updateEngineer = async (engineer_id: string, data: Partial<Engineer>, token: string): Promise<{ message: string; engineer: Engineer }> => {
+  return authFetch<{ message: string; engineer: Engineer }>(`/engineers/${engineer_id}`, {
     method: 'PUT',
     body: JSON.stringify(data),
   }, token);
@@ -79,8 +79,8 @@ export const createProject = async (projectData: Omit<Project, 'id' | 'manager_n
   }, token);
 };
 
-export const updateProject = async (projectId: string, data: Partial<Omit<Project, 'id' | 'manager_name'>>, token: string): Promise<{ message: string; project: Project }> => {
-  return authFetch<{ message: string; project: Project }>(`/projects/${projectId}`, {
+export const updateProject = async (project_id: string, data: Partial<Omit<Project, 'id' | 'manager_name'>>, token: string): Promise<{ message: string; project: Project }> => {
+  return authFetch<{ message: string; project: Project }>(`/projects/${project_id}`, {
     method: 'PUT',
     body: JSON.stringify(data),
   }, token);
@@ -88,7 +88,7 @@ export const updateProject = async (projectId: string, data: Partial<Omit<Projec
 
 // --- Assignment API Calls ---
 
-export const getAssignments = async (filters: { engineerId?: string; projectId?: string } = {}, token: string): Promise<Assignment[]> => {
+export const getAssignments = async (filters: { engineer_id?: string; project_id?: string } = {}, token: string): Promise<Assignment[]> => {
   const queryParams = new URLSearchParams(filters).toString();
   const queryString = queryParams ? `?${queryParams}` : '';
   return authFetch<Assignment[]>(`/assignments${queryString}`, { method: 'GET' }, token);

@@ -2,15 +2,16 @@ import React, { createContext, useState, useEffect } from 'react';
 import { login, getProfile } from '../api/api';
 import type { User } from '../types';
 
+// Define the shape of the AuthContext value
 interface AuthContextType {
   user: User | null;
   token: string | null;
   loading: boolean;
   login: (email: string, password: string) => Promise<any>;
   logout: () => void;
+  updateUser: (newUser: User) => void;
 }
 
-// Create the Auth Context with a default undefined value (will be set by AuthProvider)
 export const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
 // Auth Provider component
@@ -43,12 +44,9 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     try {
       const response = await login(email, password);
       localStorage.setItem('token', response.token);
-      
       setToken(response.token);
       setUser(response.user);
-      
       return response;
-    
     } catch (error) {
       console.error('Login failed:', error);
       throw error;
@@ -62,12 +60,18 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     setUser(null);
   };
 
+  // Function to update user in context (e.g., after profile update)
+  const handleUpdateUser = (newUser: User) => {
+    setUser(newUser);
+  };
+
   const authContextValue: AuthContextType = {
     user,
     token,
     loading,
     login: handleLogin,
     logout: handleLogout,
+    updateUser: handleUpdateUser,
   };
 
   return (

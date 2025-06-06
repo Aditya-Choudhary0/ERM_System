@@ -36,7 +36,7 @@ function ManagerDashboard() {
             } catch (capErr: any) {
               console.error(`Failed to fetch capacity for ${engineer.name}:`, capErr);
               // Assign a number fallback (e.g., 0) for type consistency
-              return { ...engineer, engineerId: engineer.id, maxCapacity: engineer.max_capacity, totalAllocated: 0, availableCapacity: engineer.max_capacity };
+              return { ...engineer, engineer_id: engineer.id, maxCapacity: engineer.max_capacity, totalAllocated: 0, availableCapacity: engineer.max_capacity };
             }
           })
         );

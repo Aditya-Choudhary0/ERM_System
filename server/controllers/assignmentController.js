@@ -4,9 +4,9 @@ const Project = require('../models/Project');
 const { checkAllocationOverlap } = require('../utils/capacityUtils');
 
 const getAssignments = async (req, res) => {
-    const { engineerId, projectId } = req.query; // Filters
+    const { engineer_id, project_id } = req.query; // Filters
     try {
-        const assignments = await Assignment.getAssignments({ engineerId, projectId });
+        const assignments = await Assignment.getAssignments({ engineer_id, project_id });
         res.json(assignments);
     } catch (error) {
         console.error('Error in getAssignments:', error.message);
@@ -15,30 +15,30 @@ const getAssignments = async (req, res) => {
 };
 
 const createAssignment = async (req, res) => {
-    const { engineerId, projectId, allocationPercentage, startDate, endDate, role } = req.body;
+    const { engineer_id, project_id, allocation_percentage, start_date, end_date, role } = req.body;
 
     // Basic validation
-    if (!engineerId || !projectId || allocationPercentage === undefined || !startDate || !endDate) {
+    if (!engineer_id || !project_id || allocation_percentage === undefined || !start_date || !end_date) {
         return res.status(400).json({ message: 'Missing required assignment fields.' });
     }
-    if (allocationPercentage < 0 || allocationPercentage > 100) {
+    if (allocation_percentage < 0 || allocation_percentage > 100) {
         return res.status(400).json({ message: 'Allocation percentage must be between 0 and 100.' });
     }
 
     try {
         // Validate engineer and project existence
-        const engineer = await User.getEngineerById(engineerId);
+        const engineer = await User.getEngineerById(engineer_id);
         if (!engineer) {
             return res.status(400).json({ message: 'Invalid engineer ID' });
         }
-        const project = await Project.getProjectById(projectId);
+        const project = await Project.getProjectById(project_id);
         if (!project) {
             return res.status(400).json({ message: 'Invalid project ID' });
         }
 
         // Perform capacity check for the new assignment
         const { isOverAllocated, currentAllocated, maxCapacity } = await checkAllocationOverlap(
-            engineerId, allocationPercentage, startDate, endDate
+            engineer_id, allocation_percentage, start_date, end_date
         );
 
         if (isOverAllocated) {
@@ -48,7 +48,7 @@ const createAssignment = async (req, res) => {
         }
 
         const newAssignment = await Assignment.createAssignment({
-            engineerId, projectId, allocationPercentage, startDate, endDate, role
+            engineer_id, project_id, allocation_percentage, start_date, end_date, role
         });
         res.status(201).json({ message: 'Assignment created successfully', assignment: newAssignment });
     } catch (error) {
@@ -64,7 +64,7 @@ const updateAssignment = async (req, res) => {
     const { id } = req.params;
     const updates = req.body; // Can contain partial updates
 
-    if (updates.allocationPercentage !== undefined && (updates.allocationPercentage < 0 || updates.allocationPercentage > 100)) {
+    if (updates.allocation_percentage !== undefined && (updates.allocation_percentage < 0 || updates.allocation_percentage > 100)) {
         return res.status(400).json({ message: 'Allocation percentage must be between 0 and 100.' });
     }
 
@@ -75,21 +75,21 @@ const updateAssignment = async (req, res) => {
         }
 
         // Use current values if updates are not provided
-        const engineerId = updates.engineerId || currentAssignment.engineer_id;
-        const projectId = updates.projectId || currentAssignment.project_id;
-        const allocationPercentage = updates.allocationPercentage !== undefined ? updates.allocationPercentage : currentAssignment.allocation_percentage;
-        const startDate = updates.startDate || currentAssignment.start_date;
-        const endDate = updates.endDate || currentAssignment.end_date;
+        const engineer_id = updates.engineer_id || currentAssignment.engineer_id;
+        const project_id = updates.project_id || currentAssignment.project_id;
+        const allocation_percentage = updates.allocation_percentage !== undefined ? updates.allocation_percentage : currentAssignment.allocation_percentage;
+        const start_date = updates.start_date || currentAssignment.start_date;
+        const end_date = updates.end_date || currentAssignment.end_date;
 
         // Re-validate engineer and project existence if their IDs are changed
-        if (updates.engineerId) {
-            const engineer = await User.getEngineerById(engineerId);
+        if (updates.engineer_id) {
+            const engineer = await User.getEngineerById(engineer_id);
             if (!engineer) {
                 return res.status(400).json({ message: 'Invalid engineer ID' });
             }
         }
-        if (updates.projectId) {
-            const project = await Project.getProjectById(projectId);
+        if (updates.project_id) {
+            const project = await Project.getProjectById(project_id);
             if (!project) {
                 return res.status(400).json({ message: 'Invalid project ID' });
             }
@@ -97,7 +97,7 @@ const updateAssignment = async (req, res) => {
 
         // Perform capacity check for the updated assignment
         const { isOverAllocated, currentAllocated, maxCapacity } = await checkAllocationOverlap(
-            engineerId, allocationPercentage, startDate, endDate, id // Exclude current assignment
+            engineer_id, allocation_percentage, start_date, end_date, id // Exclude current assignment
         );
 
         if (isOverAllocated) {
@@ -107,7 +107,7 @@ const updateAssignment = async (req, res) => {
         }
 
         const updatedAssignment = await Assignment.updateAssignment(id, {
-            engineerId, projectId, allocationPercentage, startDate, endDate, role: updates.role
+            engineer_id, project_id, allocation_percentage, start_date, end_date, role: updates.role
         });
 
         if (!updatedAssignment) {

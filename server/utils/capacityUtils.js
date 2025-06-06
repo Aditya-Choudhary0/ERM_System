@@ -1,20 +1,20 @@
 const pool = require('../config/db');
 
-const getEngineerCurrentAllocation = async (engineerId) => {
+const getEngineerCurrentAllocation = async (engineer_id) => {
     const today = new Date().toISOString().split('T')[0];
 
     const assignmentsResult = await pool.query(
         'SELECT allocation_percentage FROM assignments WHERE engineer_id = $1 AND end_date >= $2',
-        [engineerId, today]
+        [engineer_id, today]
     );
 
     const totalAllocated = assignmentsResult.rows.reduce((sum, assignment) => sum + assignment.allocation_percentage, 0);
     return totalAllocated;
 };
 
-const checkAllocationOverlap = async (engineerId, newAllocationPercentage, startDate, endDate, excludeAssignmentId = null) => {
+const checkAllocationOverlap = async (engineer_id, newAllocation_percentage, startDate, endDate, excludeAssignmentId = null) => {
 
-    const engineerResult = await pool.query('SELECT max_capacity FROM users WHERE id = $1 AND role = \'engineer\'', [engineerId]);
+    const engineerResult = await pool.query('SELECT max_capacity FROM users WHERE id = $1 AND role = \'engineer\'', [engineer_id]);
     const engineer = engineerResult.rows[0];
 
     if (!engineer) {
@@ -30,7 +30,7 @@ const checkAllocationOverlap = async (engineerId, newAllocationPercentage, start
               ($2 <= end_date AND $3 >= start_date) -- Check for any overlap
           )
     `;
-    const queryParams = [engineerId, startDate, endDate];
+    const queryParams = [engineer_id, startDate, endDate];
 
     if (excludeAssignmentId) {
         queryText += ` AND id != $${queryParams.length + 1}`;
@@ -40,7 +40,7 @@ const checkAllocationOverlap = async (engineerId, newAllocationPercentage, start
     const overlappingAssignments = await pool.query(queryText, queryParams);
 
     const currentAllocated = overlappingAssignments.rows.reduce((sum, assignment) => sum + assignment.allocation_percentage, 0);
-    const prospectiveTotalAllocated = currentAllocated + newAllocationPercentage;
+    const prospectiveTotalAllocated = currentAllocated + newAllocation_percentage;
 
     return {
         isOverAllocated: prospectiveTotalAllocated > maxCapacity,

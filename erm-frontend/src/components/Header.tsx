@@ -67,6 +67,12 @@ function Header({ navigate, userRole }: HeaderProps) {
             >
               My Assignments
             </button>
+            <button
+              onClick={() => navigate(ROUTES.ENGINEER_PROFILE)}
+              className="text-gray-700 hover:text-blue-600 font-medium py-1 px-3 rounded-md transition-colors"
+            >
+              My Profile
+            </button>
           </>
         )}
         <button

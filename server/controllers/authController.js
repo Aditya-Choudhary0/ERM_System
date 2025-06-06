@@ -43,7 +43,7 @@ const getProfile = async (req, res) => {
         res.json(user);
     } catch (error) {
         console.error('Error in getProfile:', error.message);
-        res.status(500).json({ message: 'Server error' });
+        res.status(500).json({ message: 'Server error',error });
     }
 };
 

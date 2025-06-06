@@ -1,7 +1,7 @@
 const pool = require('../config/db');
 
 const getAssignments = async (filters = {}) => {
-    const { engineerId, projectId } = filters;
+    const { engineer_id, project_id } = filters;
     let queryText = `
         SELECT
             a.id,
@@ -21,13 +21,13 @@ const getAssignments = async (filters = {}) => {
     const queryParams = [];
     const conditions = [];
 
-    if (engineerId) {
+    if (engineer_id) {
         conditions.push(`a.engineer_id = $${queryParams.length + 1}`);
-        queryParams.push(engineerId);
+        queryParams.push(engineer_id);
     }
-    if (projectId) {
+    if (project_id) {
         conditions.push(`a.project_id = $${queryParams.length + 1}`);
-        queryParams.push(projectId);
+        queryParams.push(project_id);
     }
 
     if (conditions.length > 0) {
@@ -45,17 +45,17 @@ const getAssignmentById = async (id) => {
 };
 
 const createAssignment = async (assignmentData) => {
-    const { engineerId, projectId, allocationPercentage, startDate, endDate, role } = assignmentData;
+    const { engineer_id, project_id, allocation_percentage, start_date, end_date, role } = assignmentData;
     const result = await pool.query(
         `INSERT INTO assignments (engineer_id, project_id, allocation_percentage, start_date, end_date, role)
          VALUES ($1, $2, $3, $4, $5, $6) RETURNING *`,
-        [engineerId, projectId, allocationPercentage, startDate, endDate, role]
+        [engineer_id, project_id, allocation_percentage, start_date, end_date, role]
     );
     return result.rows[0];
 };
 
 const updateAssignment = async (id, updates) => {
-    const { engineerId, projectId, allocationPercentage, startDate, endDate, role } = updates;
+    const { engineer_id, project_id, allocation_percentage, start_date, end_date, role } = updates;
     const result = await pool.query(
         `UPDATE assignments
          SET engineer_id = COALESCE($1, engineer_id),
@@ -66,7 +66,7 @@ const updateAssignment = async (id, updates) => {
              role = COALESCE($6, role)
          WHERE id = $7
          RETURNING *`,
-        [engineerId, projectId, allocationPercentage, startDate, endDate, role, id]
+        [engineer_id, project_id, allocation_percentage, start_date, end_date, role, id]
     );
     return result.rows[0] || null;
 };

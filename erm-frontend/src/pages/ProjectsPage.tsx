@@ -70,7 +70,7 @@ function ProjectsPage() {
     setError(null);
     try {
       // Ensure skills are an array of strings
-      const requiredSkillsArray = data.requiredSkills ? data.requiredSkills.split(',').map(s => s.trim()) : [];
+      const requiredSkillsArray = data.required_skills ? data.required_skills.split(',').map(s => s.trim()) : [];
 
       if (!editingProject) {
         if (user?.role !== 'manager') {
@@ -81,10 +81,10 @@ function ProjectsPage() {
         await createProject({
             name: data.name,
             description: data.description,
-            start_date: data.startDate,
-            end_date: data.endDate,
+            start_date: data.start_date,
+            end_date: data.end_date,
             required_skills: requiredSkillsArray,
-            team_size: data.teamSize,
+            team_size: data.team_size,
             status: data.status,
             manager_id: user.id
         }, token as string);
@@ -92,10 +92,10 @@ function ProjectsPage() {
         await updateProject(editingProject.id, {
             name: data.name,
             description: data.description,
-            start_date: data.startDate,
-            end_date: data.endDate,
+            start_date: data.start_date,
+            end_date: data.end_date,
             required_skills: requiredSkillsArray,
-            team_size: data.teamSize,
+            team_size: data.team_size,
             status: data.status,
         }, token as string);
       }
@@ -116,8 +116,8 @@ function ProjectsPage() {
   const openCreateModal = () => {
     setEditingProject(null);
     reset({
-      name: '', description: '', startDate: '', endDate: '',
-      requiredSkills: '', teamSize: undefined, status: 'planning'
+      name: '', description: '', start_date: '', end_date: '',
+      required_skills: '', team_size: undefined, status: 'planning'
     });
     setIsModalOpen(true);
   };
@@ -126,10 +126,10 @@ function ProjectsPage() {
     setEditingProject(project);
     setValue('name', project.name);
     setValue('description', project.description);
-    setValue('startDate', project.start_date.split('T')[0]);
-    setValue('endDate', project.end_date.split('T')[0]);
-    setValue('requiredSkills', project.required_skills ? project.required_skills.join(', ') : '');
-    setValue('teamSize', project.team_size);
+    setValue('start_date', project.start_date.split('T')[0]);
+    setValue('end_date', project.end_date.split('T')[0]);
+    setValue('required_skills', project.required_skills ? project.required_skills.join(', ') : '');
+    setValue('team_size', project.team_size);
     setValue('status', project.status);
     setIsModalOpen(true);
   };
@@ -261,27 +261,27 @@ function ProjectsPage() {
               <input
                 id="startDate"
                 type="date"
-                {...register('startDate', { required: 'Start date is required' })}
+                {...register('start_date', { required: 'Start date is required' })}
                 className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm"
               />
-              {errors.startDate && <p className="text-red-500 text-xs mt-1">{errors.startDate.message as string}</p>}
+              {errors.start_date && <p className="text-red-500 text-xs mt-1">{errors.start_date.message as string}</p>}
             </div>
             <div>
               <label htmlFor="endDate" className="block text-sm font-medium text-gray-700">End Date</label>
               <input
                 id="endDate"
                 type="date"
-                {...register('endDate', { required: 'End date is required' })}
+                {...register('end_date', { required: 'End date is required' })}
                 className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm"
               />
-              {errors.endDate && <p className="text-red-500 text-xs mt-1">{errors.endDate.message as string}</p>}
+              {errors.end_date && <p className="text-red-500 text-xs mt-1">{errors.end_date.message as string}</p>}
             </div>
           </div>
           <div>
             <label htmlFor="requiredSkills" className="block text-sm font-medium text-gray-700">Required Skills (comma-separated)</label>
             <input
               id="requiredSkills"
-              {...register('requiredSkills')}
+              {...register('required_skills')}
               className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm"
               placeholder="e.g., React, Node.js, SQL"
             />
@@ -292,7 +292,7 @@ function ProjectsPage() {
               <input
                 id="teamSize"
                 type="number"
-                {...register('teamSize', { valueAsNumber: true })}
+                {...register('team_size', { valueAsNumber: true })}
                 className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm"
               />
             </div>

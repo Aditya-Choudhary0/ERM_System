@@ -26,22 +26,38 @@ const getProjectById = async (req, res) => {
 };
 
 const createProject = async (req, res) => {
-    const { name, description, startDate, endDate, requiredSkills, teamSize, status, managerId } = req.body;
+    const { name, description, start_date, end_date, required_skills, team_size, status, manager_id } = req.body;
 
     // Basic validation
-    if (!name || !startDate || !endDate || !status || !managerId) {
-        return res.status(400).json({ message: 'Missing required project fields.' });
-    }
+    // if (!name || !startDate || !endDate || !status || !managerId) {
+    //     return res.status(400).json({ message: 'Missing required project fields.' });
+    // }
+
+    if (!name) {
+    return res.status(400).json({ message: 'Project name is required.' });
+}
+if (!start_date) {
+    return res.status(400).json({ message: 'Project start date is required.' });
+}
+if (!end_date) {
+    return res.status(400).json({ message: 'Project end date is required.' });
+}
+if (!status) {
+    return res.status(400).json({ message: 'Project status is required.' });
+}
+if (!manager_id) {
+    return res.status(400).json({ message: 'Project manager ID is required.' });
+}
 
     try {
         // Validate managerId
-        const manager = await User.findUserById(managerId);
+        const manager = await User.findUserById(manager_id);
         if (!manager || manager.role !== 'manager') {
             return res.status(400).json({ message: 'Invalid manager ID or not a manager.' });
         }
 
         const newProject = await Project.createProject({
-            name, description, startDate, endDate, requiredSkills, teamSize, status, managerId
+            name, description, start_date, end_date, required_skills, team_size, status, manager_id
         });
         res.status(201).json({ message: 'Project created successfully', project: newProject });
     } catch (error) {

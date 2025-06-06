@@ -18,7 +18,7 @@ export interface Engineer extends User {
 }
 
 export interface EngineerCapacity {
-  engineerId: string;
+  engineer_id: string;
   maxCapacity: number;
   totalAllocated: number;
   availableCapacity: number;
@@ -53,19 +53,25 @@ export interface Assignment {
 export interface ProjectFormData {
   name: string;
   description: string;
-  startDate: string;
-  endDate: string;
-  requiredSkills: string; // Comma-separated string for form input
-  teamSize: number;
+  start_date: string;
+  end_date: string;
+  required_skills: string; // Comma-separated string for form input
+  team_size: number;
   status: 'planning' | 'active' | 'completed';
-  managerId?: string; // Optional for existing projects, but needed for new
+  manager_id?: string; // Optional for existing projects, but needed for new
 }
 
 export interface AssignmentFormData {
-  engineerId: string;
-  projectId: string;
-  allocationPercentage: number;
-  startDate: string;
-  endDate: string;
+  engineer_id: string;
+  project_id: string;
+  allocation_percentage: number;
+  start_date: string;
+  end_date: string;
   role: string;
+}
+
+export interface EngineerProfileFormData {
+  skills: string;
+  seniority: 'junior' | 'mid' | 'senior';
+  department: string;
 }

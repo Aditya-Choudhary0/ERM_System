@@ -37,7 +37,7 @@ const getEngineerCapacity = async (req, res) => {
         const availableCapacity = engineer.max_capacity - totalAllocated;
 
         res.json({
-            engineerId: id,
+            engineer_id: id,
             maxCapacity: engineer.max_capacity,
             totalAllocated: totalAllocated,
             availableCapacity: availableCapacity

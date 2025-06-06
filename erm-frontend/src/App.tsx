@@ -7,6 +7,7 @@ import AssignmentsPage from './pages/AssignmentsPage';
 import Header from './components/Header';
 import ProtectedRoute from './components/ProtectedRoute';
 import { AuthProvider, AuthContext } from './components/AuthContext';
+import EngineerProfilePage from './pages/EngineerProfilePage';
 
 // Use a const object with 'as const' instead of enum for better compatibility and tree-shaking
 export const ROUTES = {
@@ -15,6 +16,7 @@ export const ROUTES = {
   ENGINEER_DASHBOARD: 'engineer-dashboard',
   PROJECTS: 'projects',
   ASSIGNMENTS: 'assignments',
+  ENGINEER_PROFILE: 'engineer-profile',
   NOT_FOUND: 'not-found',
 } as const;
 
@@ -72,6 +74,8 @@ function AppContent() {
         return <ProtectedRoute allowedRoles={['manager', 'engineer']}><ProjectsPage /></ProtectedRoute>;
       case ROUTES.ASSIGNMENTS:
         return <ProtectedRoute allowedRoles={['manager', 'engineer']}><AssignmentsPage /></ProtectedRoute>;
+      case ROUTES.ENGINEER_PROFILE:
+        return <ProtectedRoute allowedRoles={['manager', 'engineer']}><EngineerProfilePage /></ProtectedRoute>;
       default:
         return (
           <div className="min-h-screen flex items-center justify-center bg-gray-50">

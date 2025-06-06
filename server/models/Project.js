@@ -11,17 +11,17 @@ const getProjectById = async (id) => {
 };
 
 const createProject = async (projectData) => {
-    const { name, description, startDate, endDate, requiredSkills, teamSize, status, managerId } = projectData;
+    const { name, description, start_date, end_date, required_skills, team_size, status, manager_id } = projectData;
     const result = await pool.query(
         `INSERT INTO projects (name, description, start_date, end_date, required_skills, team_size, status, manager_id)
          VALUES ($1, $2, $3, $4, $5, $6, $7, $8) RETURNING *`,
-        [name, description, startDate, endDate, requiredSkills, teamSize, status, managerId]
+        [name, description, start_date, end_date, required_skills, team_size, status, manager_id]
     );
     return result.rows[0];
 };
 
 const updateProject = async (id, updates) => {
-    const { name, description, startDate, endDate, requiredSkills, teamSize, status, managerId } = updates;
+    const { name, description, start_date, end_date, required_skills, team_size, status, manager_id } = updates;
     const result = await pool.query(
         `UPDATE projects
          SET name = COALESCE($1, name),
@@ -34,7 +34,7 @@ const updateProject = async (id, updates) => {
              manager_id = COALESCE($8, manager_id)
          WHERE id = $9
          RETURNING *`,
-        [name, description, startDate, endDate, requiredSkills, teamSize, status, managerId, id]
+        [name, description, start_date, end_date, required_skills, team_size, status, manager_id, id]
     );
     return result.rows[0] || null;
 };

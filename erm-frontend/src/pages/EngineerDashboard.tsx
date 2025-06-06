@@ -25,7 +25,7 @@ function EngineerDashboard() {
         setLoading(true);
         setError(null);
         // Fetch assignments specifically for the logged-in engineer
-        const myAssignments = await getAssignments({ engineerId: user.id }, token);
+        const myAssignments = await getAssignments({ engineer_id: user.id }, token);
         setAssignments(myAssignments);
       } catch (err: any) {
         setError(err.message || 'Failed to fetch your assignments.');

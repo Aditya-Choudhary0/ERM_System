@@ -82,20 +82,20 @@ function AssignmentsPage() {
             if (editingAssignment) {
                 
                 await updateAssignment(editingAssignment.id, {
-                    engineer_id: data.engineerId,
-                    project_id: data.projectId,
-                    allocation_percentage: data.allocationPercentage,
-                    start_date: data.startDate,
-                    end_date: data.endDate,
+                    engineer_id: data.engineer_id,
+                    project_id: data.project_id,
+                    allocation_percentage: data.allocation_percentage,
+                    start_date: data.start_date,
+                    end_date: data.end_date,
                     assignment_role: data.role
                 }, token as string);
             } else {
                 await createAssignment({
-                    engineer_id: data.engineerId,
-                    project_id: data.projectId,
-                    allocation_percentage: data.allocationPercentage,
-                    start_date: data.startDate,
-                    end_date: data.endDate,
+                    engineer_id: data.engineer_id,
+                    project_id: data.project_id,
+                    allocation_percentage: data.allocation_percentage,
+                    start_date: data.start_date,
+                    end_date: data.end_date,
                     assignment_role: data.role
                 }, token as string);
             }
@@ -116,8 +116,8 @@ function AssignmentsPage() {
     const openCreateModal = () => {
         setEditingAssignment(null);
         reset({
-            engineerId: '', projectId: '', allocationPercentage: 0,
-            startDate: '', endDate: '', role: ''
+            engineer_id: '', project_id: '', allocation_percentage: 0,
+            start_date: '', end_date: '', role: ''
         });
         setIsModalOpen(true);
     };
@@ -125,11 +125,11 @@ function AssignmentsPage() {
     const openEditModal = (assignment: Assignment) => {
         setEditingAssignment(assignment);
         // Set form values from assignment data (mapping snake_case to camelCase for form)
-        setValue('engineerId', assignment.engineer_id);
-        setValue('projectId', assignment.project_id);
-        setValue('allocationPercentage', assignment.allocation_percentage);
-        setValue('startDate', assignment.start_date.split('T')[0]);
-        setValue('endDate', assignment.end_date.split('T')[0]);
+        setValue('engineer_id', assignment.engineer_id);
+        setValue('project_id', assignment.project_id);
+        setValue('allocation_percentage', assignment.allocation_percentage);
+        setValue('start_date', assignment.start_date.split('T')[0]);
+        setValue('end_date', assignment.end_date.split('T')[0]);
         setValue('role', assignment.assignment_role);
         setIsModalOpen(true);
     };
@@ -243,10 +243,10 @@ function AssignmentsPage() {
                 )}
                 <form onSubmit={handleSubmit(onFormSubmit)} className="space-y-4">
                     <div>
-                        <label htmlFor="engineerId" className="block text-sm font-medium text-gray-700">Engineer</label>
+                        <label htmlFor="engineer_id" className="block text-sm font-medium text-gray-700">Engineer</label>
                         <select
-                            id="engineerId"
-                            {...register('engineerId', { required: 'Engineer is required' })}
+                            id="engineer_id"
+                            {...register('engineer_id', { required: 'Engineer is required' })}
                             className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm"
                         >
                             <option value="">Select Engineer</option>
@@ -254,13 +254,13 @@ function AssignmentsPage() {
                                 <option key={eng.id} value={eng.id}>{eng.name} ({eng.email})</option>
                             ))}
                         </select>
-                        {errors.engineerId && <p className="text-red-500 text-xs mt-1">{errors.engineerId.message as string}</p>}
+                        {errors.engineer_id && <p className="text-red-500 text-xs mt-1">{errors.engineer_id.message as string}</p>}
                     </div>
                     <div>
-                        <label htmlFor="projectId" className="block text-sm font-medium text-gray-700">Project</label>
+                        <label htmlFor="project_id" className="block text-sm font-medium text-gray-700">Project</label>
                         <select
-                            id="projectId"
-                            {...register('projectId', { required: 'Project is required' })}
+                            id="project_id"
+                            {...register('project_id', { required: 'Project is required' })}
                             className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm"
                         >
                             <option value="">Select Project</option>
@@ -268,14 +268,14 @@ function AssignmentsPage() {
                                 <option key={proj.id} value={proj.id}>{proj.name}</option>
                             ))}
                         </select>
-                        {errors.projectId && <p className="text-red-500 text-xs mt-1">{errors.projectId.message as string}</p>}
+                        {errors.project_id && <p className="text-red-500 text-xs mt-1">{errors.project_id.message as string}</p>}
                     </div>
                     <div>
                         <label htmlFor="allocationPercentage" className="block text-sm font-medium text-gray-700">Allocation Percentage</label>
                         <input
                             id="allocationPercentage"
                             type="number"
-                            {...register('allocationPercentage', {
+                            {...register('allocation_percentage', {
                                 required: 'Allocation percentage is required',
                                 min: { value: 0, message: 'Minimum 0%' },
                                 max: { value: 100, message: 'Maximum 100%' },
@@ -283,28 +283,28 @@ function AssignmentsPage() {
                             })}
                             className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm"
                         />
-                        {errors.allocationPercentage && <p className="text-red-500 text-xs mt-1">{errors.allocationPercentage.message as string}</p>}
+                        {errors.allocation_percentage && <p className="text-red-500 text-xs mt-1">{errors.allocation_percentage.message as string}</p>}
                     </div>
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                         <div>
                             <label htmlFor="startDate" className="block text-sm font-medium text-gray-700">Start Date</label>
                             <input
-                                id="startDate"
+                                id="start_date"
                                 type="date"
-                                {...register('startDate', { required: 'Start date is required' })}
+                                {...register('start_date', { required: 'Start date is required' })}
                                 className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm"
                             />
-                            {errors.startDate && <p className="text-red-500 text-xs mt-1">{errors.startDate.message as string}</p>}
+                            {errors.start_date && <p className="text-red-500 text-xs mt-1">{errors.start_date.message as string}</p>}
                         </div>
                         <div>
                             <label htmlFor="endDate" className="block text-sm font-medium text-gray-700">End Date</label>
                             <input
                                 id="endDate"
                                 type="date"
-                                {...register('endDate', { required: 'End date is required' })}
+                                {...register('end_date', { required: 'End date is required' })}
                                 className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm"
                             />
-                            {errors.endDate && <p className="text-red-500 text-xs mt-1">{errors.endDate.message as string}</p>}
+                            {errors.end_date && <p className="text-red-500 text-xs mt-1">{errors.end_date.message as string}</p>}
                         </div>
                     </div>
                     <div>
